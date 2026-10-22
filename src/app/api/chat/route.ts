@@ -40,9 +40,9 @@ export async function POST(req: Request) {
       ];
     } else if (query.includes("whatsapp") || query.includes("contact") || query.includes("phone")) {
       reply =
-        "You can connect directly with our official WhatsApp desk at +92 345 4706138 for membership queries, direct assistance, and mentorship consultations.";
+        "You can connect directly with our official WhatsApp desk at +92 319 7665050 for membership queries, direct assistance, and mentorship consultations.";
       links = [
-        { label: "Open WhatsApp Chat", href: "https://wa.me/923454706138" },
+        { label: "Open WhatsApp Chat", href: "https://wa.me/923197665050" },
         { label: "Contact Page", href: "/contact" },
       ];
     } else if (query.includes("vip") || query.includes("pricing") || query.includes("cost") || query.includes("membership")) {

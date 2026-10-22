@@ -160,7 +160,7 @@ export default function PricingPage() {
           <Shield className="w-5 h-5 text-brand-teal flex-shrink-0 mt-0.5" />
           <div>
             <strong className="text-white block mb-0.5">Transparent Onboarding Notice:</strong>
-            To protect our members from fraudulent clones, all premium subscriptions and VIP admissions are processed directly via verified administrative channels on WhatsApp (+92 345 4706138) or our verified Telegram bot. We will never ask for your broker account passwords or private bank credentials.
+            To protect our members from fraudulent clones, all premium subscriptions and VIP admissions are processed directly via verified administrative channels on WhatsApp ({SITE_CONFIG.whatsappDisplay}) or our verified Telegram bot. We will never ask for your broker account passwords or private bank credentials.
           </div>
         </div>
       </div>

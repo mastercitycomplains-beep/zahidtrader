@@ -121,7 +121,7 @@ export default function ChatbotFloat() {
           fallbackLinks = [{ label: "Beginner's Guide", href: "/learn" }];
         } else if (lower.includes("vip") || lower.includes("pricing") || lower.includes("join")) {
           fallbackText =
-            "You can join the Zahid Trader VIP Desk or connect with Zahid directly via WhatsApp (+92 345 4706138) for real-time market updates.";
+            `You can join the Zahid Trader VIP Desk or connect with Zahid directly via WhatsApp (${SITE_CONFIG.whatsappDisplay}) for real-time market updates.`;
           fallbackLinks = [{ label: "View Membership Plans", href: "/pricing" }];
         }
 

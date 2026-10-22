@@ -266,7 +266,7 @@ export default function Navbar() {
                 className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-[#25D366] text-[#0B0F12] font-bold text-sm shadow-md"
               >
                 <MessageCircle className="w-5 h-5 fill-current" />
-                <span>Chat on WhatsApp (+92 345 4706138)</span>
+                <span>Chat on WhatsApp ({SITE_CONFIG.whatsappDisplay})</span>
               </Link>
               <Link
                 href="/pricing"

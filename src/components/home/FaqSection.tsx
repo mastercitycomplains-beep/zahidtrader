@@ -29,7 +29,7 @@ const FAQS: FaqItem[] = [
   },
   {
     question: "How do I connect directly with Zahid Trader on WhatsApp?",
-    answer: `You can reach our official WhatsApp desk directly at ${SITE_CONFIG.whatsappDisplay} (+92 345 4706138). Our team is available to assist with onboarding, membership inquiries, and platform navigation.`,
+    answer: `You can reach our official WhatsApp desk directly at ${SITE_CONFIG.whatsappDisplay}. Our team is available to assist with onboarding, membership inquiries, and platform navigation.`,
   },
   {
     question: "Is this financial advice or guaranteed trading signals?",

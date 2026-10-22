@@ -50,7 +50,7 @@ const ALL_FAQS: DetailedFaq[] = [
   {
     category: "Membership",
     question: "How do I activate my membership?",
-    answer: `You can reach our official WhatsApp desk directly at ${SITE_CONFIG.whatsappDisplay} (+92 345 4706138) to confirm enrollment and receive immediate access credentials.`,
+    answer: `You can reach our official WhatsApp desk directly at ${SITE_CONFIG.whatsappDisplay} to confirm enrollment and receive immediate access credentials.`,
   },
   {
     category: "Risk",
