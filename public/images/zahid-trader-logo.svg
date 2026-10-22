@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="Zahid Trader">
+  <rect width="120" height="120" rx="20" fill="#ffffff"/>
+  <rect x="8" y="8" width="104" height="104" rx="16" fill="#16B8AD"/>
+  <path fill="#0B0F12" d="M36 78V42h12v14h24V42h12v36H72V58H48v20z"/>
+  <circle cx="88" cy="34" r="6" fill="#16A875"/>
+</svg>
