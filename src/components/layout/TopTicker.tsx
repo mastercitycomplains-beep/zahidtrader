@@ -3,11 +3,16 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { INITIAL_MARKET_INSTRUMENTS, formatPrice } from "@/lib/marketData";
-import { MarketInstrument } from "@/lib/types";
+import { usePathname } from "next/navigation";
 import { ArrowUpRight, ArrowDownRight } from "lucide-react";
 
 export default function TopTicker() {
+  const pathname = usePathname();
   const [instruments, setInstruments] = useState<MarketInstrument[]>(INITIAL_MARKET_INSTRUMENTS);
+
+  if (pathname?.startsWith("/admin")) {
+    return null;
+  }
 
   // Subtle live tick simulation to create high-frequency financial feel
   useEffect(() => {

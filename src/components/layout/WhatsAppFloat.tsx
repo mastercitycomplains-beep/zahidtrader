@@ -1,11 +1,17 @@
 "use client";
 
 import React, { useState } from "react";
+import { usePathname } from "next/navigation";
 import { SITE_CONFIG, getWhatsAppUrl } from "@/lib/config";
 import { MessageCircle, X } from "lucide-react";
 
 export default function WhatsAppFloat() {
+  const pathname = usePathname();
   const [showTooltip, setShowTooltip] = useState(true);
+
+  if (pathname?.startsWith("/admin")) {
+    return null;
+  }
 
   return (
     <div className="fixed bottom-6 left-6 z-40 flex items-center group">

@@ -4,7 +4,7 @@ export const SITE_CONFIG = {
   description:
     "Institutional-grade market intelligence, daily Forex & Gold analysis, trading blog, and disciplined education for independent traders worldwide.",
   images: {
-    logo: "/images/zahid-trader-logo.svg",
+    logo: "/images/zahid-trader-logo.png",
     ceo: "/images/zahid-trader-ceo.png",
   },
   ceo: {

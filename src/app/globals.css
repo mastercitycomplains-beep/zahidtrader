@@ -2,31 +2,40 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Light theme (default when .dark is not on html) */
+/* Light theme (crisp alabaster, deep charcoal typography, emerald-cyan highlights) */
 :root {
   --primary-teal: #16b8ad;
   --deep-teal: #0c948d;
+  --teal-glow: rgba(22, 184, 173, 0.25);
   --color-page: 248 250 252;
   --color-page-elevated: 241 245 249;
   --color-surface: 255 255 255;
   --color-surface-deep: 226 232 240;
-  --color-surface-hover: 248 250 252;
+  --color-surface-hover: 241 245 249;
   --color-foreground: 15 23 42;
   --color-muted: 100 116 139;
   --color-muted-strong: 51 65 85;
   --color-border: 226 232 240;
+  --shadow-subtle: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
+  --shadow-elevated: 0 12px 32px -4px rgba(15, 23, 42, 0.08), 0 4px 12px -2px rgba(15, 23, 42, 0.04);
 }
 
+/* Dark theme (deep obsidian, obsidian elevated surfaces, luminous teal borders & ambient glow) */
 .dark {
-  --color-page: 11 15 18;
-  --color-page-elevated: 8 12 15;
-  --color-surface: 17 22 27;
-  --color-surface-deep: 7 10 13;
-  --color-surface-hover: 22 29 36;
-  --color-foreground: 247 249 250;
-  --color-muted: 115 123 131;
+  --primary-teal: #16b8ad;
+  --deep-teal: #0c948d;
+  --teal-glow: rgba(22, 184, 173, 0.35);
+  --color-page: 9 13 17;
+  --color-page-elevated: 13 18 24;
+  --color-surface: 17 24 32;
+  --color-surface-deep: 7 10 14;
+  --color-surface-hover: 23 32 42;
+  --color-foreground: 248 250 252;
+  --color-muted: 148 163 184;
   --color-muted-strong: 203 213 225;
-  --color-border: 31 41 51;
+  --color-border: 30 41 59;
+  --shadow-subtle: 0 4px 20px -2px rgba(0, 0, 0, 0.45);
+  --shadow-elevated: 0 12px 36px -4px rgba(0, 0, 0, 0.65), 0 0 20px -2px rgba(22, 184, 173, 0.08);
 }
 
 @layer base {
@@ -39,33 +48,128 @@
   }
 
   body {
-    @apply bg-page text-foreground antialiased;
+    @apply bg-page text-foreground antialiased selection:bg-brand-teal selection:text-brand-dark;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     overflow-x: hidden;
   }
 
+  /* Numerical displays in trading tables and tickers */
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+
   ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: 7px;
+    height: 7px;
   }
   ::-webkit-scrollbar-track {
-    @apply bg-page;
+    background-color: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    @apply bg-theme rounded;
+    @apply bg-theme rounded-full;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #16b8ad;
+    background-color: #16b8ad;
   }
 }
 
 @layer utilities {
   .text-heading {
-    @apply text-foreground;
+    @apply text-foreground font-display;
+  }
+
+  /* Luxury Glassmorphic Panels */
+  .glass-panel {
+    background: rgb(var(--color-surface) / 0.8);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgb(var(--color-border) / 0.85);
+  }
+
+  .glass-panel-elevated {
+    background: rgb(var(--color-surface) / 0.9);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgb(var(--color-border));
+    box-shadow: var(--shadow-elevated);
+  }
+
+  .glass-panel-glow {
+    background: rgb(var(--color-surface) / 0.88);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgb(22 184 173 / 0.35);
+    box-shadow: 0 0 25px rgb(22 184 173 / 0.12), var(--shadow-subtle);
+  }
+
+  /* Premium Card with Subtle Shimmer on Hover */
+  .premium-card {
+    position: relative;
+    background: rgb(var(--color-surface));
+    border: 1px solid rgb(var(--color-border));
+    border-radius: 1rem;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .premium-card:hover {
+    border-color: rgb(22 184 173 / 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px -6px rgba(22, 184, 173, 0.12);
+  }
+
+  /* Two-tone and Half-tone Accent Treatments for the Brand */
+  .halftone-brand-badge {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(240, 253, 250, 0.95));
+    border: 1px solid rgba(22, 184, 173, 0.3);
+    box-shadow: 0 4px 14px -2px rgba(22, 184, 173, 0.15);
+  }
+
+  .dark .halftone-brand-badge {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 253, 250, 0.98) 100%);
+    border: 1px solid rgba(22, 184, 173, 0.45);
+    box-shadow: 0 0 18px rgba(22, 184, 173, 0.25), 0 2px 8px rgba(0, 0, 0, 0.6);
+  }
+
+  /* Subtle dot pattern for financial charts and hero depth */
+  .fintech-grid-bg {
+    background-image:
+      linear-gradient(rgb(15 23 42 / 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(15 23 42 / 0.05) 1px, transparent 1px);
+    background-size: 36px 36px;
+    mask-image: radial-gradient(ellipse 80% 65% at 50% 40%, black 30%, transparent 80%);
+  }
+
+  .dark .fintech-grid-bg {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+    background-size: 36px 36px;
+  }
+
+  .hero-glow {
+    background: radial-gradient(
+      ellipse 70% 55% at 50% 0%,
+      rgb(22 184 173 / 0.15),
+      transparent 68%
+    );
+  }
+
+  .teal-gradient-text {
+    background: linear-gradient(135deg, #16b8ad 0%, #38d1c7 50%, #0c948d 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .gold-gradient-text {
+    background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 60%, #d97706 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 }
 
-/* Light theme: remap legacy dark-only utility classes used across pages */
+/* Backward-compatible color mappings for existing light mode pages */
 html:not(.dark) .text-white {
   color: rgb(var(--color-foreground));
 }
@@ -103,117 +207,23 @@ html:not(.dark) .border-white\/10 {
   border-color: rgb(15 23 42 / 0.1);
 }
 
-html:not(.dark) .teal-gradient-text {
-  background: linear-gradient(135deg, #0b0f12 10%, #16b8ad 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.glass-panel {
-  background: rgb(var(--color-surface) / 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgb(var(--color-border) / 0.8);
-}
-
-.glass-panel-glow {
-  background: rgb(var(--color-surface) / 0.9);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgb(22 184 173 / 0.35);
-  box-shadow: 0 0 25px rgb(22 184 173 / 0.08);
-}
-
-.teal-gradient-text {
-  background: linear-gradient(135deg, #ffffff 20%, #16b8ad 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.gold-gradient-text {
-  background: linear-gradient(135deg, #fff 30%, #e0ad1e 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
 @keyframes tickerLoop {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
 
 .animate-marquee {
   display: flex;
   width: max-content;
-  animation: tickerLoop 40s linear infinite;
+  animation: tickerLoop 38s linear infinite;
 }
 
 .animate-marquee:hover {
   animation-play-state: paused;
 }
 
-@keyframes candlestickWiggle {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-4px);
-  }
-}
-
-.animate-candlestick {
-  animation: candlestickWiggle 3s ease-in-out infinite;
-}
-
-.fintech-grid-bg {
-  background-image:
-    linear-gradient(rgb(15 23 42 / 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(15 23 42 / 0.04) 1px, transparent 1px);
-  background-size: 48px 48px;
-  mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, black 20%, transparent 75%);
-}
-
-.dark .fintech-grid-bg {
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-}
-
-.hero-glow {
-  background: radial-gradient(
-    ellipse 70% 55% at 50% 0%,
-    rgb(22 184 173 / 0.12),
-    transparent 65%
-  );
-}
-
-.motion-safe-reveal {
-  opacity: 0;
-  transform: translateY(16px);
-  transition:
-    opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.motion-safe-reveal-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .animate-marquee,
-  .animate-candlestick,
-  .animate-bounce {
+  .animate-marquee {
     animation: none !important;
-  }
-
-  .motion-safe-reveal {
-    opacity: 1;
-    transform: none;
-    transition: none;
   }
 }
