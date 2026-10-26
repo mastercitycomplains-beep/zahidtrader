@@ -14,11 +14,25 @@ import {
   ShieldCheck,
   Activity,
   Zap,
+  Sparkles,
 } from "lucide-react";
 import { getWhatsAppUrl, SITE_CONFIG } from "@/lib/config";
 import { LOTTIE_ASSETS } from "@/lib/animations";
 import TradingAtmosphere from "@/components/motion/TradingAtmosphere";
 import MotionFade from "@/components/motion/MotionFade";
+
+const HologramTradingChart3D = dynamic(
+  () => import("@/components/three/HologramTradingChart3D"),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="w-full h-[480px] sm:h-[540px] rounded-3xl border border-cyan-500/20 bg-[#090D11]/80 backdrop-blur-xl animate-pulse flex flex-col items-center justify-center text-cyan-400 font-mono text-xs">
+        <div className="w-8 h-8 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin mb-3" />
+        <span>Initializing 3D Trading Matrix...</span>
+      </div>
+    ),
+  }
+);
 
 const TradingLottie = dynamic(
   () => import("@/components/animations/TradingLottie"),
@@ -34,6 +48,7 @@ const TradingLottie = dynamic(
 );
 
 export default function HeroSection() {
+  const [heroVisualMode, setHeroVisualMode] = useState<"3d" | "2d">("3d");
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
   const [subscribeError, setSubscribeError] = useState("");
@@ -206,45 +221,81 @@ export default function HeroSection() {
             </MotionFade>
           </div>
 
-          {/* Right Column: Lottie Financial Visual with Glassmorphic Card */}
+          {/* Right Column: 3D Holographic Visual with Mode Switcher */}
           <div className="lg:col-span-6 relative">
             <MotionFade direction="left" delay={0.2}>
-              <div className="absolute inset-4 rounded-3xl bg-brand-teal/[0.08] blur-3xl pointer-events-none" aria-hidden />
-              <div className="relative rounded-3xl border border-theme bg-surface/80 backdrop-blur-xl p-5 sm:p-7 shadow-2xl transition-all duration-300 hover:border-brand-teal/30">
-                <div className="flex items-center justify-between pb-4 mb-4 border-b border-theme">
-                  <div className="flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-brand-green animate-ping" />
-                    <p className="text-[11px] uppercase tracking-[0.18em] text-brand-teal font-extrabold">
-                      Live Market Pulse
-                    </p>
-                  </div>
-                  <span className="text-xs font-mono font-bold text-muted tabular-nums">
-                    XAU/USD · EUR/USD · DXY
-                  </span>
+              {/* Subtle top visual switcher */}
+              <div className="flex items-center justify-between mb-3 px-1">
+                <div className="flex items-center gap-1.5 p-1 rounded-2xl bg-surface border border-theme shadow-sm">
+                  <button
+                    type="button"
+                    onClick={() => setHeroVisualMode("3d")}
+                    className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all flex items-center gap-1.5 ${
+                      heroVisualMode === "3d"
+                        ? "bg-brand-teal text-[#090D11] shadow-lg shadow-brand-teal/25"
+                        : "text-muted hover:text-foreground"
+                    }`}
+                  >
+                    <Sparkles className="w-3.5 h-3.5" />
+                    <span>3D Hologram Terminal</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setHeroVisualMode("2d")}
+                    className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                      heroVisualMode === "2d"
+                        ? "bg-brand-teal text-[#090D11] shadow-lg shadow-brand-teal/25"
+                        : "text-muted hover:text-foreground"
+                    }`}
+                  >
+                    <span>2D Flow</span>
+                  </button>
                 </div>
 
-                <TradingLottie
-                  src={LOTTIE_ASSETS.stockChart}
-                  lazy={false}
-                  ariaLabel="Animated financial chart showing market activity"
-                  className="min-h-[290px] sm:min-h-[350px] lg:min-h-[390px]"
-                />
-
-                <div className="mt-4 pt-4 border-t border-theme grid grid-cols-3 gap-2 text-center text-xs">
-                  <div className="p-2 rounded-xl bg-surface-deep border border-theme/60">
-                    <div className="text-[10px] text-muted uppercase font-bold">Gold Bias</div>
-                    <div className="font-extrabold text-brand-green tabular-nums">Bullish</div>
-                  </div>
-                  <div className="p-2 rounded-xl bg-surface-deep border border-theme/60">
-                    <div className="text-[10px] text-muted uppercase font-bold">US Dollar</div>
-                    <div className="font-extrabold text-foreground tabular-nums">Range 104.2</div>
-                  </div>
-                  <div className="p-2 rounded-xl bg-surface-deep border border-theme/60">
-                    <div className="text-[10px] text-muted uppercase font-bold">Risk Regime</div>
-                    <div className="font-extrabold text-brand-teal tabular-nums">Expansion</div>
-                  </div>
-                </div>
+                <span className="text-[10px] font-mono font-bold text-brand-teal bg-brand-teal/10 border border-brand-teal/20 px-2.5 py-1 rounded-full uppercase tracking-wider hidden sm:inline-block">
+                  Institutional 3D Engine
+                </span>
               </div>
+
+              {heroVisualMode === "3d" ? (
+                <HologramTradingChart3D />
+              ) : (
+                <div className="relative rounded-3xl border border-theme bg-surface/80 backdrop-blur-xl p-5 sm:p-7 shadow-2xl transition-all duration-300 hover:border-brand-teal/30">
+                  <div className="flex items-center justify-between pb-4 mb-4 border-b border-theme">
+                    <div className="flex items-center gap-2">
+                      <span className="w-2.5 h-2.5 rounded-full bg-brand-green animate-ping" />
+                      <p className="text-[11px] uppercase tracking-[0.18em] text-brand-teal font-extrabold">
+                        Live Market Pulse
+                      </p>
+                    </div>
+                    <span className="text-xs font-mono font-bold text-muted tabular-nums">
+                      XAU/USD · EUR/USD · DXY
+                    </span>
+                  </div>
+
+                  <TradingLottie
+                    src={LOTTIE_ASSETS.stockChart}
+                    lazy={false}
+                    ariaLabel="Animated financial chart showing market activity"
+                    className="min-h-[290px] sm:min-h-[350px] lg:min-h-[390px]"
+                  />
+
+                  <div className="mt-4 pt-4 border-t border-theme grid grid-cols-3 gap-2 text-center text-xs">
+                    <div className="p-2 rounded-xl bg-surface-deep border border-theme/60">
+                      <div className="text-[10px] text-muted uppercase font-bold">Gold Bias</div>
+                      <div className="font-extrabold text-brand-green tabular-nums">Bullish</div>
+                    </div>
+                    <div className="p-2 rounded-xl bg-surface-deep border border-theme/60">
+                      <div className="text-[10px] text-muted uppercase font-bold">US Dollar</div>
+                      <div className="font-extrabold text-foreground tabular-nums">Range 104.2</div>
+                    </div>
+                    <div className="p-2 rounded-xl bg-surface-deep border border-theme/60">
+                      <div className="text-[10px] text-muted uppercase font-bold">Risk Regime</div>
+                      <div className="font-extrabold text-brand-teal tabular-nums">Expansion</div>
+                    </div>
+                  </div>
+                </div>
+              )}
             </MotionFade>
           </div>
         </div>

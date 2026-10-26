@@ -1,3 +1,4 @@
+import dynamic from "next/dynamic";
 import HeroSection from "@/components/home/HeroSection";
 import TradingDeskPreview from "@/components/home/TradingDeskPreview";
 import FeaturesTicker from "@/components/home/FeaturesTicker";
@@ -10,6 +11,11 @@ import WhyChooseSection from "@/components/home/WhyChooseSection";
 import FaqSection from "@/components/home/FaqSection";
 import { NEWS_ARTICLES } from "@/lib/newsData";
 import { SITE_CONFIG } from "@/lib/config";
+
+const ScrollAtmosphere3D = dynamic(
+  () => import("@/components/three/ScrollAtmosphere3D"),
+  { ssr: false }
+);
 
 function HomeBlogStructuredData() {
   const posts = NEWS_ARTICLES.slice(0, 4).map((article) => ({
@@ -52,7 +58,8 @@ function HomeBlogStructuredData() {
 
 export default function HomePage() {
   return (
-    <div className="flex flex-col w-full">
+    <div className="relative flex flex-col w-full">
+      <ScrollAtmosphere3D />
       <HomeBlogStructuredData />
       <HeroSection />
       <FeaturesTicker />

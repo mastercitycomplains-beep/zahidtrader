@@ -2,8 +2,6 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
-import Link from "next/link";
 import BrandLogo from "@/components/layout/BrandLogo";
 import {
   Lock,
@@ -11,21 +9,26 @@ import {
   Eye,
   EyeOff,
   ArrowRight,
-  ShieldCheck,
   AlertCircle,
   KeyRound,
+  Shield,
 } from "lucide-react";
 
 export default function AdminLoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState("admin@zahidtrader.com");
-  const [password, setPassword] = useState("zahidtrader2026");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!email || !password) {
+      setError("Please enter your admin email and password.");
+      return;
+    }
+
     setLoading(true);
     setError("");
 
@@ -33,17 +36,25 @@ export default function AdminLoginPage() {
       const res = await fetch("/api/admin/auth", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email: email.trim(), password }),
       });
 
-      const data = await res.json();
-      if (!res.ok) {
-        throw new Error(data.error || "Authentication failed.");
+      let data: { error?: string; success?: boolean } = {};
+      const text = await res.text();
+      if (text) {
+        try {
+          data = JSON.parse(text);
+        } catch {
+          data = {};
+        }
       }
 
-      // Successful login
-      router.push("/admin");
-      router.refresh();
+      if (!res.ok) {
+        throw new Error(data.error || "Invalid administrator credentials. Access denied.");
+      }
+
+      // Successful login - hard redirect ensures session cookie is immediately active
+      window.location.href = "/admin";
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Failed to sign in. Please verify your credentials.";
       setError(msg);
@@ -64,7 +75,7 @@ export default function AdminLoginPage() {
             Administrator Sign In
           </h1>
           <p className="text-xs sm:text-sm text-muted mt-2">
-            Secure editorial console for publishing market intelligence and managing blog articles.
+            Private management console for authorized Zahid Trader staff only.
           </p>
         </div>
 
@@ -91,7 +102,8 @@ export default function AdminLoginPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  placeholder="admin@zahidtrader.com"
+                  autoComplete="email"
+                  placeholder="Enter authorized email"
                   className="w-full pl-10 pr-4 py-3 bg-page border border-theme rounded-xl text-sm text-foreground placeholder-muted focus:outline-none focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/20 transition-all"
                 />
               </div>
@@ -111,7 +123,8 @@ export default function AdminLoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  placeholder="••••••••••••"
+                  autoComplete="current-password"
+                  placeholder="Enter security key"
                   className="w-full pl-10 pr-11 py-3 bg-page border border-theme rounded-xl text-sm text-foreground placeholder-muted focus:outline-none focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/20 transition-all"
                 />
                 <button
@@ -136,21 +149,9 @@ export default function AdminLoginPage() {
             </button>
           </form>
 
-          {/* Test Credentials Box */}
-          <div className="mt-6 pt-5 border-t border-theme text-xs text-muted">
-            <div className="p-3.5 rounded-xl bg-surface-deep border border-theme">
-              <span className="font-extrabold text-foreground block mb-1">
-                Default Administrator Access:
-              </span>
-              <p className="font-mono text-[11px] text-muted-strong">
-                Email: <span className="text-brand-teal font-semibold">admin@zahidtrader.com</span>
-                <br />
-                Password: <span className="text-brand-teal font-semibold">zahidtrader2026</span>
-              </p>
-              <p className="text-[10px] text-muted mt-1.5">
-                (Configure custom values in <code className="text-foreground">.env.local</code> via <code className="text-foreground">ADMIN_PASSWORD</code>)
-              </p>
-            </div>
+          <div className="mt-6 pt-5 border-t border-theme flex items-center justify-center gap-2 text-[11px] text-muted">
+            <Shield className="w-3.5 h-3.5 text-brand-teal" />
+            <span>256-bit encrypted administrative session</span>
           </div>
         </div>
       </div>

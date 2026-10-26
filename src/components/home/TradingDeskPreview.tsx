@@ -1,6 +1,7 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import {
   TrendingUp,
@@ -12,12 +13,41 @@ import {
   ArrowRight,
   MessageCircle,
   Send,
+  Sparkles,
+  Coins,
 } from "lucide-react";
 import LiveTradingChart from "@/components/charts/LiveTradingChart";
 import ScrollReveal from "@/components/motion/ScrollReveal";
 import { getWhatsAppUrl, SITE_CONFIG } from "@/lib/config";
 
+const GlobalLiquidityGlobe3D = dynamic(
+  () => import("@/components/three/GlobalLiquidityGlobe3D"),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="w-full h-[450px] rounded-3xl border border-cyan-500/20 bg-[#090D11]/80 backdrop-blur-xl animate-pulse flex flex-col items-center justify-center text-cyan-400 font-mono text-xs">
+        <div className="w-8 h-8 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin mb-3" />
+        <span>Loading Interbank Liquidity Globe...</span>
+      </div>
+    ),
+  }
+);
+
+const GoldBullionCoin3D = dynamic(
+  () => import("@/components/three/GoldBullionCoin3D"),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="w-full h-[450px] rounded-3xl border border-amber-500/20 bg-[#090D11]/80 backdrop-blur-xl animate-pulse flex flex-col items-center justify-center text-amber-400 font-mono text-xs">
+        <div className="w-8 h-8 border-2 border-amber-400 border-t-transparent rounded-full animate-spin mb-3" />
+        <span>Rendering 24K Gold Asset Vault...</span>
+      </div>
+    ),
+  }
+);
+
 export default function TradingDeskPreview() {
+  const [deskVisualMode, setDeskVisualMode] = useState<"globe" | "gold" | "chart">("globe");
   const features = [
     {
       icon: TrendingUp,
@@ -130,26 +160,68 @@ export default function TradingDeskPreview() {
             </div>
           </ScrollReveal>
 
-          {/* Right Column: Live Interactive Desk Visual & Chart */}
+          {/* Right Column: 3D Interactive Desk Visual & Chart */}
           <ScrollReveal className="lg:col-span-7 relative" delayMs={80}>
-            <div className="flex flex-wrap items-center gap-2 mb-3 px-1">
-              <span className="inline-flex items-center gap-1.5 bg-brand-green/15 border border-brand-green/30 text-brand-green px-3 py-1 rounded-full text-[11px] font-semibold uppercase tracking-wide">
-                Live desk preview
-              </span>
-              <span className="inline-flex items-center gap-1.5 bg-brand-teal/15 border border-brand-teal/30 text-brand-teal px-3 py-1 rounded-full text-[11px] font-semibold uppercase tracking-wide">
-                XAU/USD scenario chart
+            {/* Visualizer Mode Switcher */}
+            <div className="flex flex-wrap items-center justify-between gap-2 mb-3 px-1">
+              <div className="flex items-center gap-1.5 p-1 rounded-2xl bg-white/[0.04] border border-white/[0.08]">
+                <button
+                  type="button"
+                  onClick={() => setDeskVisualMode("globe")}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+                    deskVisualMode === "globe"
+                      ? "bg-brand-teal text-[#090D11] shadow-lg shadow-brand-teal/20"
+                      : "text-gray-400 hover:text-white"
+                  }`}
+                >
+                  <Globe className="w-3.5 h-3.5" />
+                  <span>3D Liquidity Globe</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setDeskVisualMode("gold")}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+                    deskVisualMode === "gold"
+                      ? "bg-amber-400 text-[#090D11] shadow-lg shadow-amber-400/20"
+                      : "text-gray-400 hover:text-white"
+                  }`}
+                >
+                  <Coins className="w-3.5 h-3.5" />
+                  <span>3D Gold Vault</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setDeskVisualMode("chart")}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+                    deskVisualMode === "chart"
+                      ? "bg-brand-teal text-[#090D11] shadow-lg shadow-brand-teal/20"
+                      : "text-gray-400 hover:text-white"
+                  }`}
+                >
+                  <Sparkles className="w-3.5 h-3.5" />
+                  <span>Scenario Chart</span>
+                </button>
+              </div>
+
+              <span className="text-[10px] font-mono text-gray-400 hidden sm:inline">
+                Interactive 3D Engine · WebGL
               </span>
             </div>
 
-            {/* Live Chart Container */}
-            <LiveTradingChart symbol="XAU/USD" initialPrice={2685.4} height={380} />
-
-            <div className="mt-4 flex items-center justify-between text-xs text-gray-500 px-2">
-              <span>* Real-time interbank price ticks simulated with verified pricing feeds</span>
-              <Link href="/markets" className="text-brand-teal hover:underline font-semibold">
-                Open Full Screen Dashboard →
-              </Link>
-            </div>
+            {/* Display Active Mode */}
+            {deskVisualMode === "globe" && <GlobalLiquidityGlobe3D />}
+            {deskVisualMode === "gold" && <GoldBullionCoin3D />}
+            {deskVisualMode === "chart" && (
+              <>
+                <LiveTradingChart symbol="XAU/USD" initialPrice={2685.4} height={420} />
+                <div className="mt-4 flex items-center justify-between text-xs text-gray-500 px-2">
+                  <span>* Real-time interbank price ticks simulated with verified pricing feeds</span>
+                  <Link href="/markets" className="text-brand-teal hover:underline font-semibold">
+                    Open Full Screen Dashboard →
+                  </Link>
+                </div>
+              </>
+            )}
           </ScrollReveal>
         </div>
       </div>

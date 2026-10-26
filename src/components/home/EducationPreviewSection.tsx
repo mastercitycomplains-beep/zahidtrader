@@ -21,14 +21,28 @@ const TradingLottie = dynamic(
   }
 );
 
+const RiskRewardHologram3D = dynamic(
+  () => import("@/components/three/RiskRewardHologram3D"),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="w-full h-[380px] rounded-2xl border border-teal-500/20 bg-brand-surface/40 animate-pulse flex items-center justify-center text-teal-400 font-mono text-xs">
+        Loading 3D Risk Matrix...
+      </div>
+    ),
+  }
+);
+
 export default function EducationPreviewSection() {
+  const [activeTab, setActiveTab] = React.useState<"3d" | "2d">("3d");
+
   return (
     <section className="py-24 bg-[#0B0F12] border-t border-white/[0.04] relative overflow-hidden">
       <div className="absolute bottom-0 left-0 w-80 h-80 bg-brand-teal/[0.04] rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-12">
-          <ScrollReveal className="lg:col-span-7">
+          <ScrollReveal className="lg:col-span-6">
             <span className="text-xs font-bold uppercase tracking-widest text-brand-teal mb-2 block">
               Trading Academy
             </span>
@@ -49,18 +63,50 @@ export default function EducationPreviewSection() {
             </Link>
           </ScrollReveal>
 
-          <ScrollReveal className="lg:col-span-5" delayMs={100}>
-            <div className="rounded-2xl border border-white/[0.08] bg-brand-surface/50 p-4 shadow-xl">
-              <p className="text-[10px] uppercase tracking-[0.18em] text-brand-teal font-bold mb-2">
-                Learning path
-              </p>
-              <TradingLottie
-                src={LOTTIE_ASSETS.tradeGraph}
-                lazy
-                ariaLabel="Animated trading graph illustrating market structure"
-                className="min-h-[200px] sm:min-h-[240px]"
-              />
+          <ScrollReveal className="lg:col-span-6" delayMs={100}>
+            <div className="flex items-center justify-between mb-2 px-1">
+              <div className="flex items-center gap-1 p-1 rounded-xl bg-white/[0.04] border border-white/[0.08]">
+                <button
+                  type="button"
+                  onClick={() => setActiveTab("3d")}
+                  className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${
+                    activeTab === "3d"
+                      ? "bg-brand-teal text-[#090D11]"
+                      : "text-gray-400 hover:text-white"
+                  }`}
+                >
+                  3D Risk Engine
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveTab("2d")}
+                  className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${
+                    activeTab === "2d"
+                      ? "bg-brand-teal text-[#090D11]"
+                      : "text-gray-400 hover:text-white"
+                  }`}
+                >
+                  Structure Graph
+                </button>
+              </div>
+              <span className="text-[10px] font-mono text-gray-400">Institutional Expectancy</span>
             </div>
+
+            {activeTab === "3d" ? (
+              <RiskRewardHologram3D className="w-full h-[360px] sm:h-[400px]" />
+            ) : (
+              <div className="rounded-2xl border border-white/[0.08] bg-brand-surface/50 p-4 shadow-xl">
+                <p className="text-[10px] uppercase tracking-[0.18em] text-brand-teal font-bold mb-2">
+                  Learning path
+                </p>
+                <TradingLottie
+                  src={LOTTIE_ASSETS.tradeGraph}
+                  lazy
+                  ariaLabel="Animated trading graph illustrating market structure"
+                  className="min-h-[200px] sm:min-h-[240px]"
+                />
+              </div>
+            )}
           </ScrollReveal>
         </div>
 

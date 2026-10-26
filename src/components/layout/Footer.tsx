@@ -19,13 +19,13 @@ import {
 export default function Footer() {
   const pathname = usePathname();
   const [email, setEmail] = useState("");
+  const [subscribed, setSubscribed] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [subscribeError, setSubscribeError] = useState("");
 
   if (pathname?.startsWith("/admin")) {
     return null;
   }
-  const [subscribed, setSubscribed] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [subscribeError, setSubscribeError] = useState("");
 
   const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();

@@ -46,10 +46,6 @@ const SUGGESTED_PROMPTS = [
 export default function ChatbotFloat() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
-
-  if (pathname?.startsWith("/admin")) {
-    return null;
-  }
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<ChatMessage[]>(INITIAL_MESSAGES);
   const [isTyping, setIsTyping] = useState(false);
@@ -64,6 +60,10 @@ export default function ChatbotFloat() {
       scrollToBottom();
     }
   }, [messages, isOpen]);
+
+  if (pathname?.startsWith("/admin")) {
+    return null;
+  }
 
   const handleSendMessage = async (textToSend: string) => {
     if (!textToSend.trim()) return;

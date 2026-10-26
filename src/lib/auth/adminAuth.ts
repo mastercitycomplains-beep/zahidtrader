@@ -13,7 +13,12 @@ export interface AdminUser {
 
 /** Verify credentials and create a signed session token */
 export function verifyCredentials(email: string, pass: string): AdminUser | null {
-  if (email.trim().toLowerCase() === DEFAULT_ADMIN_EMAIL.toLowerCase() && pass === DEFAULT_ADMIN_PASSWORD) {
+  const cleanEmail = (email || "").trim().toLowerCase();
+  const cleanPass = (pass || "").trim();
+  const expectedEmail = DEFAULT_ADMIN_EMAIL.trim().toLowerCase();
+  const expectedPass = DEFAULT_ADMIN_PASSWORD.trim();
+
+  if (cleanEmail === expectedEmail && cleanPass === expectedPass) {
     return {
       email: DEFAULT_ADMIN_EMAIL,
       name: "Zahid Trader Desk Admin",
